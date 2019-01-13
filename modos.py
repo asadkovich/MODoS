@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from datetime import datetime
 from scapy.all import *
 import socket
@@ -94,7 +96,7 @@ def atackHttp():
 
 		req += 1
 		sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		
+
 		try:
 			sock.connect((host, port))
 			sock.send(request.encode())
