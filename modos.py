@@ -18,7 +18,7 @@ def showBanner():
 
 def usageMsg():
 	print("USAGE: python " + sys.argv[0] + "  [HOST] [PORT] [PACKETS] [TIMEOUT]"
-                "\nEXAMPLE: python " + sys.argv[0] + "  http://google.com 80 10 5\n")
+                "\nEXAMPLE: python " + sys.argv[0] + "  http://google.com 80 10000 0.01\n")
 	exit(0)
 
 showBanner()
