@@ -58,7 +58,7 @@ if len(sys.argv) == 1:
 			break
 
 		except:
-			print(colored("Something went wrong!", "red"))
+			print(colored("Incorrect input!", "red"))
 
 elif len(sys.argv) != 5:
 	usageMsg()
