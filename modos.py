@@ -51,9 +51,9 @@ if len(sys.argv) == 1:
 	while True:
 
 		try:
-			port     = int(input("[+]PORT > "))
-			threads  = int(input("[+]PACKETS > "))
-			timeout  = float(input("[+]TIMEOUT (less than 1) > "))
+			port     = int(input("[+]PORT (default: 80) > ") or 80 )
+			threads  = int(input("[+]PACKETS (default: 10000)> ") or 10000 ) 
+			timeout  = float(input("[+]TIMEOUT (default: 0.01) > ") or 0.01 ) 
 			print("")
 			break
 
