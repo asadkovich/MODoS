@@ -58,7 +58,7 @@ if len(sys.argv) == 1:
 			break
 
 		except:
-			print(colored("Something went wrong!", "red"))
+			print(colored("Incorrect input!", "red"))
 
 elif len(sys.argv) != 5:
 	usageMsg()
@@ -129,7 +129,7 @@ except:
 
 sock.close()
 
-def atackHttp():
+def attackHttp():
 	global req
 	global err
 
@@ -147,7 +147,7 @@ def atackHttp():
 	if req % 1000 == 0:
 		print(colored("[+]", "green") + " [" + str(datetime.now().strftime("%d %b %Y %H:%M:%S")) + "] " + host + " [" + colored(err, "red") + "] ") 
 
-def atackTcp():
+def attackTcp():
 	global req
 	global err
 
@@ -168,7 +168,7 @@ def atackTcp():
 	if req % 1000 == 0:
 		print(colored("[+]", "green") + " [" + str(datetime.now().strftime("%d %b %Y %H:%M:%S")) + "] " + host + " [" + colored(err,"red") + "] ")
 
-def atackUdp():
+def attackUdp():
 	global req
 	global err
 
@@ -218,11 +218,11 @@ all_threads = []
 for i in range(threads):
 
 	if mode == 'HTTP':
-		th = Thread(target=atackHttp)
+		th = Thread(target=attackHttp)
 	elif mode == 'TCP':
-		th = Thread(target=atackTcp)
+		th = Thread(target=attackTcp)
 	elif mode == 'UDP':
-		th = Thread(target=atackUdp)
+		th = Thread(target=attackUdp)
 
 	try:
 		th.daemon = True
