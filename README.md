@@ -16,3 +16,5 @@ OR
 **$** python modos.py [HOST] [PORT] [PACKETS] [TIMEOUT]<br>
 EXAMPLE: python modos.py http://google.com 80 10000 0.01
 
+![screenshot of MODoS](https://i.imgur.com/tarrK92.png)
+
