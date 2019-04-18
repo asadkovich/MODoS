@@ -13,8 +13,7 @@
 
 OR
 
-**$** python modos.py [HOST] [PORT] [PACKETS] [TIMEOUT]<br>
-EXAMPLE: python modos.py http://google.com 80 10000 0.01
-
+**$** python modos.py [HOST] [PORT] [THREADS] [DURATION]<br>
+EXAMPLE: python modos.py http://google.com 80 50 3
 ![screenshot of MODoS](https://i.imgur.com/tarrK92.png)
 
